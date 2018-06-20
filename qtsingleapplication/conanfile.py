@@ -41,10 +41,12 @@ class QtSingleApplicationConan(ConanFile):
     def package(self):
         self.copy("src/*.h", dst="include", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
+        self.copy("*.so*", dst="lib", keep_path=False, links=True)
+        self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dylib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["QtSolutions_SingleApplication"]
+        self.cpp_info.libs = ["Qt5Solutions_SingleApplication"]
         self.cpp_info.libdirs = ["lib"]
         self.cpp_info.includedirs = ["include"]

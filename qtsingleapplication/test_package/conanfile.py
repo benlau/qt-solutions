@@ -30,10 +30,14 @@ class TestConan(ConanFile):
         QtHelper.make(self)
 
     def imports(self):
-        self.copy("*.dll", dst="bin", src="bin")
-        self.copy("*.dylib*", dst="bin", src="lib")
-        self.copy('*.so*', dst='bin', src='lib')
+        self.copy("*.dll", dst=".", src="bin")
+        self.copy("*.dylib*", dst=".", src="lib")
+        self.copy('*.so*', dst='.', src='lib')
 
     def test(self):
         print(os.getcwd())
-        self.run(".%stest_package" % os.sep)
+        cmd = ".%stest_package" % os.sep
+        if platform.system() == "Linux":
+            cmd = "LD_LIBRARY_PATH=%s " % self.build_folder + cmd
+        cmd = "QT_QPA_PLATFORM=minimal " + cmd
+        self.run(cmd)
